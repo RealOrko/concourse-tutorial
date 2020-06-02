@@ -13,7 +13,7 @@ resources:
 - name: tutorial
   type: git
   source:
-    uri: https://github.com/starkandwayne/concourse-tutorial.git
+    uri: https://github.com/realorko/concourse-tutorial.git
     branch: develop
 
 jobs:
@@ -212,7 +212,7 @@ EOF
 fi
 ```
 
-On failure, the message will start with "Unforuntately...". On success, the message will start with "Harray!".
+On failure, the message will start with "Unfortunately...". On success, the message will start with "Harray!".
 
 ![slack-webhook-dynamic-messages](/images/slack-webhook-dynamic-messages.png)
 

@@ -22,21 +22,19 @@ The `pipeline.yml` does not yet have a git repo nor its write-access private key
 
 ![gist](/images/gist.png)
 
-Copy the "SSH" git URL:
+Click the "Embed" dropdown, select "Clone via SSH", and copy the git URL:
 
 ![ssh](/images/ssh.png)
 
-And paste it into the `pipeline.yml` file:
+And modify the `resource-gist` section of `pipeline.yml`:
 
 ```
----
-resources:
 - name: resource-gist
   type: git
   source:
     uri: git@gist.github.com:e028e491e42b9fb08447a3bafcf884e5.git
     branch: master
-    private_key: |-
+    private_key: |
       -----BEGIN RSA PRIVATE KEY-----
       MIIEpQIBAAKCAQEAuvUl9YU...
       ...
@@ -45,6 +43,7 @@ resources:
 ```
 
 Also paste in your `~/.ssh/id_rsa` private key (or which ever you have registered with github) into the `private_key` section.
+_Note: Please make sure that the key used here is not generated using a passphrase. Otherwise, the key will not be accepted and you would get an error._
 
 Update the pipeline, force Concourse to quickly re-check the new Gist credentials, and then run the job:
 
@@ -77,7 +76,7 @@ The `bump-timestamp-file` task runs the following `bump-timestamp-file.sh` scrip
 git clone resource-gist updated-gist
 
 cd updated-gist
-echo $(date) > bumpme
+date > bumpme
 
 git config --global user.email "nobody@concourse-ci.org"
 git config --global user.name "Concourse"
@@ -117,7 +116,7 @@ The Docker image being used is described in the `image_resources` section of the
 
 The Docker image [`starkandwayne/concourse`](https://hub.docker.com/r/starkandwayne/concourse) is described at https://github.com/starkandwayne/dockerfiles/ and is common base Docker image used by many Stark & Wayne pipelines.
 
-Your organisation may wish to curate its own based Docker images to be shared across pipelines. After finishing the Basics lessons, visit Lesson [Create and Use Docker Images](/miscellaneous/docker-images/) for creating pipelines to create your own Docker images using Concourse.
+Your organisation may wish to curate its own base Docker images to be shared across pipelines. After finishing the Basics lessons, visit Lesson [Create and Use Docker Images](/miscellaneous/docker-images/) for creating pipelines to create your own Docker images using Concourse.
 
 ## Tragic Security
 

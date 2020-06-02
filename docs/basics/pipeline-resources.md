@@ -3,7 +3,7 @@ image_path: /images/resource-job.gif
 
 # Pipeline Resources
 
-It is very fast to iterate on a job's tasks by configuring them in the `pipeline.yml` YAML file. You edit the `pipeline.yml`, run `fly set-pipeline`, and the entire pipeline is updated atomically.
+It is very fast to iterate on a job's tasks by configuring them in the `pipeline.yml` YAML file. You edit the `pipeline.yml`, run `fly set-pipeline`, and the entire pipeline is updated automatically.
 
 The initial lessons introduced Tasks as standalone YAML files (which can be run via `fly execute`). Our `pipeline.yml` YAML files can be refactored to use these.
 
@@ -13,20 +13,20 @@ But with pipelines we now need to store the task file and task script somewhere 
 
 Concourse offers no services for storing/retrieving your data. No git repositories. No blobstores. No build numbers. Every input and output must be provided externally. Concourse calls them "Resources". Example resources are `git`, `s3`, and `semver` respectively.
 
-See the Concourse documentation [Resource Types](https://concourse-ci.org/resource-types.html) for the list of built-in resource types and community resource types. Send messages to Slack. Bump a version number from 0.5.6 to 1.0.0. Create a ticket on Pivotal Tracker. It is all possible with Concourse resource types. The Concourse Tutorials [Miscellaneous](/miscellaneous/) section also introduces some commonly useful Resource Types.
+See the Concourse documentation [Resource Types](https://concourse-ci.org/resource-types.html) for the list of built-in resource types and community resource types. Send messages to Slack. Bump a version number from 0.5.6 to 1.0.0. Create a ticket on Pivotal Tracker. It is all possible with Concourse resource types. The Concourse Tutorial's [Miscellaneous](/miscellaneous/) section also introduces some commonly useful Resource Types.
 
 The most common resource type to store our task files and task scripts is the `git` resource type. Perhaps your task files could be fetched via the `s3` resource type from an AWS S3 file; or the `archive` resource type to extract them from a remote archive file. Or perhaps the task files could be pre-baked into the `image_resource` base Docker image. But mostly you will use a `git` resource in your pipeline to pull in your pipeline task files.
 
 This tutorial's source repository is a Git repo, and it contains many task files (and their task scripts). For example, the original `tutorials/basic/task-hello-world/task_hello_world.yml`.
 
-To pull in the Git repository, we add a top-level section `resources`:
+To pull in the Git repository, we edit `pipeline-resources/pipeline.yml` and add a top-level section `resources`:
 
 ```yaml
 resources:
 - name: resource-tutorial
   type: git
   source:
-    uri: https://github.com/starkandwayne/concourse-tutorial.git
+    uri: https://github.com/realorko/concourse-tutorial.git
     branch: develop
 ```
 
@@ -46,7 +46,8 @@ To deploy this change:
 
 ```
 cd ../pipeline-resources
-fly sp -t tutorial -c pipeline.yml -p hello-world
+fly -t tutorial sp -c pipeline.yml -p hello-world
+fly -t tutorial up -p hello-world
 ```
 
 The output will show the delta between the two pipelines and request confirmation. Type `y`. If successful, it will show:
@@ -72,7 +73,7 @@ The in-progress or newly-completed `job-hello-world` job UI has three sections:
 * `resource-tutorial` resource is fetched
 * `hello-world` task is executed
 
-The latter two are "steps" in the job's [build plan](http://concourse-ci.org/build-plans.html). A build plan is a sequence of steps to execute. These steps may fetch down or update Resources, or execute Tasks.
+The latter two are "steps" in the job's [build plan](http://concourse-ci.org/builds.html). A build plan is a sequence of steps to execute. These steps may fetch down or update Resources, or execute Tasks.
 
 The first build plan step fetches down (note the down arrow to the left) a `git` repository for these training materials and tutorials. The pipeline named this resource `resource-tutorial` and clones the repo into a directory with the same name. This means that later in the build-plan, we reference files relative to this folder.
 

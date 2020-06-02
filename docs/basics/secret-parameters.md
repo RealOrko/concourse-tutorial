@@ -4,13 +4,14 @@ description: Concourse can be extended with a credentials manager to allow value
 
 Concourse can be extended with a credentials manager to allow values and secrets to be set and rotated without any changes to your pipelines. No more variable files containing secrets on your file system. No more updating multiple pipelines whenever you need to change common variables.
 
-Concourse supports Cloud Foundry Credhub and Hashicorp Vault. They have a common behaviour within Concourse. For the simplicity of the Concourse Tutorial book we will use the simplest tool to re-deploy Concourse with a credentials manager - [bucc](https://github.com/starkandwayne/bucc) - which includes Credhub. Credhub is very simple to interact with via its own CLI and is 100% open source.
+Concourse supports Cloud Foundry Credhub, Hashicorp Vault, Amazon SSM, and Amazon Secrets Manager. They have a common behaviour within Concourse. For the simplicity of the Concourse Tutorial book we will use the simplest tool to re-deploy Concourse with a credentials manager - [bucc](https://github.com/starkandwayne/bucc) - which includes Credhub. Credhub is very simple to interact with via its own CLI and is 100% open source.
 
 ## Redeploy Concourse with Credhub
 
 We will now switch from our `docker-compose up` deployment of Concourse to [bucc](https://github.com/starkandwayne/bucc) to deploy a local single VM version of Concourse that has the Credhub credentials manager. As a bonus, `bucc` will allow you to deploy a production-version of Concourse to any public or private cloud. In this tutorial we will deploy `bucc` to your local machine.
 
 First, you need to install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (for the local deployment of `bucc`).
+If you are running Ubuntu, macOS or CentOS, there are [additional dependencies](https://bosh.io/docs/cli-v2-install/#additional-dependencies) that need to be installed before the local deployment of `bucc`.
 
 Next:
 

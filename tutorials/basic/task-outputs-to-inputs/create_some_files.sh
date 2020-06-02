@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set ex
+set -ex
 
 mkdir some-files
 echo "file1" > some-files/file1

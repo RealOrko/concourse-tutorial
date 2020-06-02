@@ -11,6 +11,7 @@ jobs:
   public: true
   plan:
   - get: resource-tutorial
+    trigger: true
   - task: create-some-files
     config:
       platform: linux
